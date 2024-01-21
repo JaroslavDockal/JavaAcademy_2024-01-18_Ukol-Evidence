@@ -25,8 +25,8 @@ import java.net.InetAddress;
 
 public class Main {
     public static void main(String[] args){
-        String divider = "\n--------------------------------------------------------------------------------------------";
-        int sumOfContract;
+        String divider = "\n-------------------------------------------";
+        int sumOfContracts;
         double sumOfSoldAmount;
 
         Seller seller01
@@ -35,21 +35,22 @@ public class Main {
 
         Seller seller02
                 = new Seller("František Skočdopole", LocalDate.of(1932,01,16) , 7,
-                3.1, "Malá Velká", "4S4 2132", 4.6, "13.37.55.63" );
+                3.1, "Lhota", "4S4 2132", 4.6, "13.37.55.63" );
 
         Seller seller03
                 = new Seller("Kleofáš Zajíc", LocalDate.of(1984,04,01) , 2,
-                1.33, "Rychlá", "5U0 2736", 12.7, "138.241.4.31" );
+                1.33, "Nová Ves u Nového Města na Moravě", "5U0 2736", 12.7, "138.241.4.31" );
 
         System.out.println("Data ke dni: " + LocalDate.now() + "." + divider);
         System.out.println(seller01.toString() + divider);
         System.out.println(seller02.toString() + divider);
         System.out.println(seller03.toString() + divider);
 
-        sumOfContract = seller01.noOfContracts + seller02.noOfContracts + seller03.noOfContracts;
+        sumOfContracts = seller01.noOfContracts + seller02.noOfContracts + seller03.noOfContracts;
         sumOfSoldAmount = seller01.soldAmount + seller02.soldAmount + seller03.soldAmount;
 
-        System.out.println("Celkem dodáno " + sumOfSoldAmount + " tun zboží, navázáno na " + sumOfContract + " smluv.");
-        System.out.println("Průměrné množství zboží na 1 smlouvu je " + String.format("%.0f", 1000*sumOfSoldAmount/sumOfContract) + " kg.");
+        System.out.println("Celkem sjednáno " + sumOfContracts + " smluv");
+        System.out.println("Celkem dodáno "+ sumOfSoldAmount + " tun mrkve");
+        System.out.println("Průměrné množství mrkve na smlouvu: " + String.format("%.0f", 1000*sumOfSoldAmount/sumOfContracts) + " kg");
     }
 }

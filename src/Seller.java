@@ -1,6 +1,6 @@
 import java.time.LocalDate;
-//import java.text.DecimalFormat;
-import java.net.InetAddress;
+import java.time.format.DateTimeFormatter;
+//import java.net.InetAddress;
 
 public class Seller {
     String name;
@@ -37,18 +37,27 @@ public class Seller {
     @Override public String toString()
     {
         String smlouvaStr;
+        String sjendanoStr;
 
         if (this.getNoOfContracts() == 1) {
             smlouvaStr = " smlouva";
+            sjendanoStr = "\nSjednána ";
         } else if (this.getNoOfContracts() == 2) {
             smlouvaStr = " smlouvy";
+            sjendanoStr = "\nSjednány ";
         } else {
             smlouvaStr = " smluv";
+            sjendanoStr = "\nSjednáno ";
         }
 
-        return (String.format(this.getName() + " dodal celkem " + this.getSoldAmount() + " tun zboží, navázáno na " +
-                        this.getNoOfContracts() + smlouvaStr + " (průměrně " + "%.0f" + " kg/smlouva).",
-                (1000*this.getSoldAmount()/this.getNoOfContracts()))
-        );
+        return ("Jméno prodejce: " + name +
+                "\nDatum narození: " + dateOfBirth.format(DateTimeFormatter.ofPattern("d.M.y")) +
+                "\nSídlo prodejce: " + city +
+                "\nSPZ vozidla: " + spz +
+                "\nSpotřeba vozidla: " + consumption + " l/100km" +
+                "\nIP adresa firemního počítače: " + ip +
+                sjendanoStr + noOfContracts + smlouvaStr +
+                "\nCelkové množství prodané mrkve: " + soldAmount + " tun" +
+                "\nPruměrné množství mrkve na smlouvu: " + String.format("%.0f",(1000*this.getSoldAmount()/this.getNoOfContracts())) +" kg");
     }
 }
