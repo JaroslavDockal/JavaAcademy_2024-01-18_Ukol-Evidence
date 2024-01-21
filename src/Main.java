@@ -21,7 +21,7 @@ Na základě zadaných údajů vypiš v metodě main na obrazovku průměrné mn
 // Class Declaration
 
 import java.time.LocalDate;
-import java.net.InetAddress;
+//import java.net.InetAddress;
 
 public class Main {
     public static void main(String[] args){
