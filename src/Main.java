@@ -28,6 +28,8 @@ public class Main {
         String divider = "\n-------------------------------------------";
         int sumOfContracts;
         double sumOfSoldAmount;
+        double avgPerContract;
+        String avgPerContractMsg;
 
         Seller seller01
                 = new Seller("Tomáš Fuk", LocalDate.of(2002,07,01) , 5,
@@ -39,7 +41,7 @@ public class Main {
 
         Seller seller03
                 = new Seller("Kleofáš Zajíc", LocalDate.of(1984,04,01) , 2,
-                1.33, "Nová Ves u Nového Města na Moravě", "5U0 2736", 12.7, "138.241.4.31" );
+                4.33, "Nová Ves u Nového Města na Moravě", "5U0 2736", 12.7, "138.241.4.31" );
 
         System.out.println("Data ke dni: " + LocalDate.now() + "." + divider);
         System.out.println(seller01.toString() + divider);
@@ -48,9 +50,16 @@ public class Main {
 
         sumOfContracts = seller01.noOfContracts + seller02.noOfContracts + seller03.noOfContracts;
         sumOfSoldAmount = seller01.soldAmount + seller02.soldAmount + seller03.soldAmount;
+        avgPerContract = sumOfSoldAmount/sumOfContracts;
+
+        if (avgPerContract < 1){
+            avgPerContractMsg = String.format("%.0f" + " kg", 1000*avgPerContract);
+        } else {
+            avgPerContractMsg = String.format("%.0f" + " tun", avgPerContract);
+        }
 
         System.out.println("Celkem sjednáno " + sumOfContracts + " smluv");
-        System.out.println("Celkem dodáno "+ sumOfSoldAmount + " tun mrkve");
-        System.out.println("Průměrné množství mrkve na smlouvu: " + String.format("%.0f", 1000*sumOfSoldAmount/sumOfContracts) + " kg");
+        System.out.println("Celkem dodáno "+ String.format("%.1f",sumOfSoldAmount) + " tun mrkve");
+        System.out.println("Průměrné množství mrkve na smlouvu: " + avgPerContractMsg);
     }
 }
