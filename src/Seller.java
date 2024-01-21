@@ -42,7 +42,7 @@ public class Seller {
         if (this.getNoOfContracts() == 1) {
             smlouvaStr = " smlouva";
             sjendanoStr = "\nSjednána ";
-        } else if (this.getNoOfContracts() == 2) {
+        } else if (this.getNoOfContracts() < 5 ) {
             smlouvaStr = " smlouvy";
             sjendanoStr = "\nSjednány ";
         } else {
