@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-//import java.net.InetAddress;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class Seller {
     String name;
@@ -8,21 +9,36 @@ public class Seller {
     int noOfContracts;
     double soldAmount;
     String city;
-    String spz;
+    SPZ spz;
     double consumption;
-    String ip;
+    String ipStr;
+    InetAddress ip = null;
+    String ipMsg;
+
+    private boolean isValidIpAddress(String ip) {
+        return ip != null && !ip.isEmpty();
+    }
 
     public Seller(String name, LocalDate dateOfBirth, int noOfContracts, double soldAmount,
-                  String city, String spz, double consumption, String ip)
+                  String city, String SPZ, double consumption, String ip)
     {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.noOfContracts = noOfContracts;
         this.soldAmount = soldAmount;
         this.city = city;
-        this.spz = spz;
+        this.spz = new SPZ(SPZ);
         this.consumption = consumption;
-        this.ip = ip;
+        this.ipStr = ip;
+        if (isValidIpAddress(this.ipStr)) {
+            try {
+                this.ip = InetAddress.getByName(this.ipStr);
+            } catch (UnknownHostException e) {
+                this.ip = null;
+            }
+        } else {
+            this.ip = null;
+        }
     }
 
     public String getName() { return name; }
@@ -30,33 +46,46 @@ public class Seller {
     public int getNoOfContracts() { return noOfContracts; }
     public double getSoldAmount() { return soldAmount; }
     public String getCity() { return city; }
-    public String getSPZ() { return spz; }
+    public String getSPZ() { return spz.getSPZ(); }
     public double getConsumption() { return consumption; }
-    public String getIP() { return ip; }
+    public String getIP() {
+        InetAddress tempIp = ip;
+        if (tempIp != null) {
+            return tempIp.getHostAddress();
+        } else {
+            return "Neznámá IP adresa";
+        }
+    }
 
     @Override public String toString()
     {
-        String smlouvaStr;
-        String sjendanoStr;
+        String smlouvaMsg;
+        String sjendanoMsg;
 
         if (this.getNoOfContracts() == 1) {
-            smlouvaStr = " smlouva";
-            sjendanoStr = "\nSjednána ";
-        } else if (this.getNoOfContracts() < 5 ) {
-            smlouvaStr = " smlouvy";
-            sjendanoStr = "\nSjednány ";
+            sjendanoMsg = "\nSjednána ";
+            smlouvaMsg = " smlouva";
+        } else if (this.getNoOfContracts() < 5) {
+            sjendanoMsg = "\nSjednány ";
+            smlouvaMsg = " smlouvy";
         } else {
-            smlouvaStr = " smluv";
-            sjendanoStr = "\nSjednáno ";
+            sjendanoMsg = "\nSjednáno ";
+            smlouvaMsg = " smluv";
         }
+
+        if (ip != null) {
+            ipMsg = ip.getHostAddress();
+        }else{
+            ipMsg = "Neznámá IP adresa";
+        };
 
         return ("Jméno prodejce: " + name +
                 "\nDatum narození: " + dateOfBirth.format(DateTimeFormatter.ofPattern("d.M.y")) +
                 "\nSídlo prodejce: " + city +
-                "\nSPZ vozidla: " + spz +
+                "\nSPZ vozidla: " + spz.getSummary() +
                 "\nSpotřeba vozidla: " + consumption + " l/100km" +
-                "\nIP adresa firemního počítače: " + ip +
-                sjendanoStr + noOfContracts + smlouvaStr +
+                "\nIP adresa firemního počítače: " + ipMsg +
+                sjendanoMsg + noOfContracts + smlouvaMsg +
                 "\nCelkové množství prodané mrkve: " + soldAmount + " tun" +
                 "\nPruměrné množství mrkve na smlouvu: " + String.format("%.0f",(1000*this.getSoldAmount()/this.getNoOfContracts())) +" kg");
     }

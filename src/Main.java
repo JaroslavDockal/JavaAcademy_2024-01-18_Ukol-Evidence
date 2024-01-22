@@ -31,7 +31,7 @@ public class Main {
 
         Seller seller01
                 = new Seller("Tomáš Fuk", LocalDate.of(2002,07,01) , 5,
-                2.6, "Stará při Čopni", "2P4 3376", 8.3, "68.5.2.12" );
+                2.6, "Stará při Čopni", "AAAAAAA", 8.3, "68.5.2.12" );
 
         Seller seller02
                 = new Seller("František Skočdopole", LocalDate.of(1932,01,16) , 7,
@@ -39,7 +39,7 @@ public class Main {
 
         Seller seller03
                 = new Seller("Kleofáš Zajíc", LocalDate.of(1984,04,01) , 2,
-                4.33, "Nová Ves u Nového Města na Moravě", "5U0 2736", 12.7, "138.241.4.31" );
+                4.33, "Nová Ves u Nového Města na Moravě", "5U02736", 12.7, "138.241.4.31" );
 
         System.out.println("Data ke dni: " + LocalDate.now() + "." + divider);
         System.out.println(seller01.toString() + divider);
