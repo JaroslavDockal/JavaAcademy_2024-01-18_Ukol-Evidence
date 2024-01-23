@@ -14,14 +14,16 @@ public class Seller {
     String ipStr;
     InetAddress ip = null;
     String ipMsg;
+    int id = 0;
 
     private boolean isValidIpAddress(String ip) {
         return ip != null && !ip.isEmpty();
     }
 
-    public Seller(String name, LocalDate dateOfBirth, int noOfContracts, double soldAmount,
+    public Seller(int id, String name, LocalDate dateOfBirth, int noOfContracts, double soldAmount,
                   String city, String SPZ, double consumption, String ip)
     {
+        this.id = id;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.noOfContracts = noOfContracts;
@@ -41,6 +43,7 @@ public class Seller {
         }
     }
 
+    public int getId() { return id; }
     public String getName() { return name; }
     public LocalDate getDateOfBirth() { return dateOfBirth; }
     public int getNoOfContracts() { return noOfContracts; }
@@ -87,6 +90,8 @@ public class Seller {
                 "\nIP adresa firemního počítače: " + ipMsg +
                 sjendanoMsg + noOfContracts + smlouvaMsg +
                 "\nCelkové množství prodané mrkve: " + soldAmount + " tun" +
-                "\nPruměrné množství mrkve na smlouvu: " + String.format("%.0f",(1000*this.getSoldAmount()/this.getNoOfContracts())) +" kg");
+                "\nPruměrné množství mrkve na smlouvu: " + String.format("%.0f",(1000*this.getSoldAmount()/this.getNoOfContracts())) +" kg"
+        );
+
     }
 }
