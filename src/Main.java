@@ -137,7 +137,7 @@ public class Main {
         if (avgPerContract < 1){
             avgPerContractMsg = String.format("%.0f" + " kg", 1000*avgPerContract);
         } else {
-            avgPerContractMsg = String.format("%.0f" + " tun", avgPerContract);
+            avgPerContractMsg = String.format("%.1f" + " tun", avgPerContract);
         }
 
         System.out.println("Celkem sjednáno " + sumOfContracts + " smluv");
