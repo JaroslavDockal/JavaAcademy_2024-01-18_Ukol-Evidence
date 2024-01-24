@@ -85,7 +85,7 @@ public class Seller {
         return ("Jméno prodejce: " + name +
                 "\nDatum narození: " + dateOfBirth.format(DateTimeFormatter.ofPattern("d.M.y")) +
                 "\nSídlo prodejce: " + city +
-                "\nSPZ vozidla: " + spz.getSummary() +
+                "\nSPZ vozidla: " + spz.getSPZ() +
                 "\nSpotřeba vozidla: " + consumption + " l/100km" +
                 "\nIP adresa firemního počítače: " + ipMsg +
                 sjendanoMsg + noOfContracts + smlouvaMsg +

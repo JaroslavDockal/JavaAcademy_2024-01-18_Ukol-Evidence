@@ -110,34 +110,38 @@ public class SPZ {
         if (!isValid()) {
             return "Neplatná SPZ";
         }else if (isElectric()) {
-            return "Elektrická vozidla";
+            return "Elektrické vozidlo";
         } else if (isDiplomatic()) {
-            return "Diplomatická";
+            return "Diplomatická SPZ";
         } else if (isHistorical()) {
-            return "Historická vozidla";
+            return "Historické vozidlo";
         } else if (isHandling()) {
             return "Manipulační provoz";
         } else if (isSaleToRegistration()) {
-            return "Jízda z místa prodeje do místa registrace";
+            return "SPZ pro jízdu z místa prodeje do místa registrace";
         } else if (isTest()) {
-            return "Zkušební provoz";
+            return "SPZ pro zkušební provoz";
         } else if (isSports()) {
-            return "Sportovní vozidla";
+            return "Sportovní vozidlo";
         } else if (isStandard()) {
-            return "Standardní";
+            return "Standardní SPZ";
         } else if (isMilitary()) {
-            return "Vojenská";
+            return "Vojenská SPZ";
         } else {
-            return "Na přání";
+            return "SPZ Na přání";
         }
     }
 
     public String getSummary() {
         if (isValid()) {
             if ((isStandard() || isHistorical() || isHandling() || isSaleToRegistration() || isSports()) && !isElectric()) {
-                return getSPZ() + " (" + getRegion() + ")";
+                if (isStandard()) {
+                    return getSPZ() + ", " + getRegion();
+                } else {
+                    return getSPZ() + ", " + getType() + ", " + getRegion();
+                }
             } else {
-                return getSPZ() + " (" + getType() + ")";
+                return getSPZ() + ", " + getType();
             }
         } else {
             return "Neplatná SPZ";

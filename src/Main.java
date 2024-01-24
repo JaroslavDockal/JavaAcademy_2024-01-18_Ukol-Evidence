@@ -126,7 +126,7 @@ public class Main {
         System.out.println("Data ke dni: " + LocalDate.now() + "." + divider);
         for (Seller seller : sellers) {
             if (seller.getId() >= 1 && seller.getId() <= 99) {
-                System.out.println(seller.toString() + divider);
+                //System.out.println(seller.toString() + divider);
                 sumOfContracts += seller.noOfContracts;
                 sumOfSoldAmount += seller.soldAmount;
             }
