@@ -1,18 +1,19 @@
+/*
+Akceptuje jen značky definované ve Vyhlášce č. 343/2014 Sb., (Část pátá)
+Neakceptuje značky k umístění na nosné zařízení připojitelné k silničnímu vozidlu (§23/e)
+Ověřování splnění §24/2 je do určité úrovně redundantní...
+Klasické staré značky by to teoreticky mělo označit za značky na přání
+*/
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SPZ {
     private String spz;
-    private boolean isValid;
 
     public SPZ(String spz) {
         this.spz = spz.replaceAll("\\s", "");
-        this.isValid = isValid() && containsLetterAndDigit();
     }
-
-    /*public boolean isValid() {
-        return isValid;
-    }*/
 
     public String getSPZ() {
         if (isValid() && (spz.length() >= 5 && spz.length() <= 8 && containsLetterAndDigit()) || isMilitary()) {
@@ -173,52 +174,76 @@ public class SPZ {
     }
 
     private boolean isStandard() {
-        if (!isElectric() &&  spz.matches("[0-9A-Z]{1}[ABCEHJKLMPSTUZ]{1}[0-9A-Z]{5}")){
+        if (spz.matches("[0-9A-Z]{1}[ABCEHJKLMPSTUZ]{1}[0-9A-Z]{5}") && !isDiplomatic() && !isElectric()){ //tyhle 2 mají na druhé pozici znaky které by mohli projít
             return true;
         } else {
             return false;
         }
     }
 
-    /*První je na značce trojčíslí identifikující ambasádu,
-    pak vždy dvě písmena CD/XX/XS/HC/. Následuje pořadové dvojčíslí.*/
+    /*Registrační značka diplomatická nebo cizinecká je složena z velkých písmen latinské
+    abecedy „CD“, „XX“, „XS“ nebo „HC“ a u automobilů z 5, u motocyklů ze 4 a u mopedů
+    se šlapadly ze 3 arabských číslic.
+    "Postaru" to bylo jinak - trojčíslí identifikující ambasádu,
+    dvě písmena CD/XX/XS/HC a pořadové dvojčíslí.
+    Zahrnuty obě varianty*/
     private boolean isDiplomatic() {
-        return spz.matches("[0-9]{3}[CD]{2}[0-9]{2}") || //diplomatická imunita
-                spz.matches("[0-9]{3}[XX]{2}[0-9]{2}") || //omezená diplomatická imunita
-                spz.matches("[0-9]{3}[XS]{2}[0-9]{2}") || //diplomatický personál
-                spz.matches("[0-9]{3}[HC]{2}[0-9]{2}");   //honorární konsul
+        return  spz.matches("[CD]{2}[0-9]{3,5}") || //diplomatická imunita
+                spz.matches("[XX]{2}[0-9]{3,5}") || //omezená diplomatická imunita
+                spz.matches("[XS]{2}[0-9]{3,5}") || //diplomatický personál
+                spz.matches("[HC]{2}[0-9]{3,5}") || //honorární konsul
+                spz.matches("[0-9]{3}[CD]{2}[0-9]{2}") ||
+                spz.matches("[0-9]{3}[XX]{2}[0-9]{2}") ||
+                spz.matches("[0-9]{3}[XS]{2}[0-9]{2}") ||
+                spz.matches("[0-9]{3}[HC]{2}[0-9]{2}");
     }
 
+    /*Registrační značka elektrického vozidla je složena z velkých písmen „EL“ a z
+    dalších arabských číslic nebo velkých písmen latinské abecedy, kterých je u
+    automobilů 5, u motocyklů 4 a u mopedů se šlapadly 3.*/
     private boolean isElectric() {
         return spz.startsWith("EL") && spz.matches("EL[0-9A-Z]{3,5}");
     }
 
-    //Veteráni mají číselný kód kraje (01-14) před písmenem V na třetí pozici, následuje čtyřmístné pořadové číslo.
+    /*Registrační značka pro historická vozidla začíná vždy dvoumístným číselným znakem
+    arabských číslic registračního místa, které zajišťuje registraci historických vozidel
+    na správním území kraje, a velkým písmenem „V“, za nímž se u historických automobilů
+    umísťují 4, u historických motocyklů 3 a u historických mopedů se šlapadly 2 arabské
+    číslice nebo písmena latinské abecedy.*/
     private boolean isHistorical() {
         return spz.matches("[0-1]{1}[0-9]{1}V[0-9A-Z]{2,4}");
     }
 
-    /* Zvláštní motorová vozidla - na značce je nejprve písmeno kraje,
-    následuje dvojčíslím série a čtyřmístným pořadovým číslem.*/
+    /* Zvláštní registrační značka pro manipulační provoz se skládá nejméně z 5 znaků
+    a nejvíce z 6 znaků a začíná vždy písmenem kódu kraje, ostatní znaky jsou složeny
+    z velkých písmen latinské abecedy a arabských číslic..*/
     private boolean isHandling() {
-        return spz.matches("[ABCEHJKLMPSTUZ]{1}[A-Z0-9]{6}");
+        return spz.matches("[ABCEHJKLMPSTUZ]{1}[A-Z0-9]{4,5}");
     }
 
-    /*Jednorázové použití s omezenou platností (převoz vozidla z prodejny domů apod.)
-    Na značce je vyznačen kraj následovaný 6 pořadovými číslicemi.*/
+    /*Zvláštní registrační značka pro jízdu z místa prodeje do místa registrace silničního
+    vozidla se skládá ze 7 znaků a začíná vždy písmenem kódu kraje, ostatní znaky jsou
+    vyjádřeny arabskými číslicemi nebo písmeny latinské abecedy.*/
     private boolean isSaleToRegistration() {
         return spz.matches("[ABCEHJKLMPSTUZ]{1}[A-Z][0-9A-Z]{6}");
     }
 
-    //Auta pro zkušební účely mají písmeno F, následované čtyřmístným pořadovým číslem.
+    /*Zvláštní registrační značka pro zkušební provoz se skládá z 5 znaků
+    a začíná vždy písmenem „F“, ostatní znaky jsou vyjádřeny arabskými číslicemi
+    nebo písmeny latinské abecedy. */
     private boolean isTest() {
         return spz.startsWith("F") && spz.matches("F[0-9A-Z]{4}");
     }
 
-    //Závodní auta mají písmeno R. Kód kraje je číselný 01 až 14 před prvním písmenem R. Následuje čtyřmístné pořadové číslo.
+    /*Registrační značka pro sportovní vozidla začíná vždy dvoumístným číselným znakem
+    arabských číslic registračního místa, které zajišťuje registraci sportovních vozidel
+    na správním území kraje, a velkým písmenem „R“, za nímž se u sportovních automobilů
+    umísťují 4 a u sportovních motocyklů 3 arabské číslice. */
     private boolean isSports() {
         return spz.matches("[0-1]{1}[0-9]{1}R[0-9A-Z]{2,4}");
     }
+
+    //Tohle jsem ve vyhlášce nenašel - je možné vydat novou, nebo to je historie?
     private boolean isMilitary() {
         return spz.matches("[0-9]{1,7}");
     }
